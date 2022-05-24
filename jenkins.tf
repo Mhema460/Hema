@@ -30,3 +30,4 @@ resource "google_compute_instance" "jenkins-master-new1" {
 		 
     }
   }
+}
