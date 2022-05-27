@@ -1,14 +1,3 @@
-resource "google_compute_firewall" "tcp-firewall-rule-8080" {
-  name = "tcp-firewall-rule-8080-22-9070"
-  network = "default"
-
-  allow {
-    protocol = "tcp"
-    ports = ["8080", "22", "9070"]
-  }
-  source_ranges = ["0.0.0.0/0"]
-}
-
 resource "google_compute_instance" "jenkins-master-new1" {
   name         = "jenkins-master-new1"
   machine_type = "n2-standard-4"
