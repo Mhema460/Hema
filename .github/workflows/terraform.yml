@@ -91,7 +91,8 @@ jobs:
 
       # Generates an execution plan for Terraform
       - name: terraform plan
-        run: terraform plan -out=${{ github.sha }}.plan
+        run: |
+         terraform plan -input=false -var-file=${{ matrix.environment }}/terraform.tfvars -no-color
 
       # On push to master, build or change infrastructure according to Terraform configuration files
       - name: terraform apply
