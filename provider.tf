@@ -1,5 +1,5 @@
 provider "google" {
-  project_id  = "helical-song-350207"
+  project  = "helical-song-350207"
   region  = "europe-west1"
 }
 
