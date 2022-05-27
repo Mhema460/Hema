@@ -1,108 +1,100 @@
-# This workflow installs the latest version of Terraform CLI and configures the Terraform CLI configuration file
-# with an API token for Terraform Cloud (app.terraform.io). On pull request events, this workflow will run
-# `terraform init`, `terraform fmt`, and `terraform plan` (speculative plan via Terraform Cloud). On push events
-# to the main branch, `terraform apply` will be executed.
 #
-# Documentation for `hashicorp/setup-terraform` is located here: https://github.com/hashicorp/setup-terraform
+# Cloud Foundation 
+# Google Cloud Platform Terraform pipeline
+# 
+# This workflow runs Terraform code for several stages.
 #
-# To use this workflow, you will need to complete the following setup steps.
+# Important: Ensure the used GCP service account keys are rotated regularly!
 #
-# 1. Create a `main.tf` file in the root of this repository with the `remote` backend and one or more resources defined.
-#   Example `main.tf`:
-#     # The configuration for the `remote` backend.
-#     terraform {
-#       backend "remote" {
-#         # The name of your Terraform Cloud organization.
-#         organization = "example-organization"
+# Setup:
+#   * Create a service account that has all the required permissions to
+#     apply any change done by your Terraform code
 #
-#         # The name of the Terraform Cloud workspace to store Terraform state files in.
-#         workspaces {
-#           name = "example-workspace"
-#         }
-#       }
-#     }
+#   * Create a service account key
+#     * Encode the key file using base64 (disable line wrapping)
+#     * Store it as a GitHub repository secret
 #
-#     # An example resource that does nothing.
-#     resource "null_resource" "example" {
-#       triggers = {
-#         value = "A example resource that does nothing!"
-#       }
-#     }
+#   * Recommended: Create key rotation for your service account keys
 #
+# The workflow assumes you are having multiple environments with different service accounts.
+# Each stage has a dedicated secret holding your service account key:
 #
-# 2. Generate a Terraform Cloud user API token and store it as a GitHub secret (e.g. TF_API_TOKEN) on this repository.
-#   Documentation:
-#     - https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html
-#     - https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
+#     Env  | Secret name
+#     -----+---------------------------
+#     dev  | TERRAFORM_CREDENTIALS_DEV
+#     pp   | TERRAFORM_CREDENTIALS_PP
+#     prod | TERRAFORM_CREDENTIALS_PROD
 #
-# 3. Reference the GitHub secret in step using the `hashicorp/setup-terraform` GitHub Action.
-#   Example:
-#     - name: Setup Terraform
-#       uses: hashicorp/setup-terraform@v1
-#       with:
-#         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+# Amount of stages, names and secret names can be adjusted by modifying the jobs strategy matrix.
+#
+# Additionally the workflow will run Terraform plan for any push or pull request on any branch, but only
+# apply changes via Terraform apply on commits pushed to the master branch.
+# This can be adjusted by modifying the last step's conditions if needed.
 
-name: 'Terraform'
+name: 'GCP deployment'
 
 on:
   push:
-    branches:
-    - main
-  pull_request:
-
-permissions:
-  contents: read
-
+   # Remove this if you do not use the CF workflow for key rotation
+   paths-ignore:
+      - '.github/workflows/cf-gcp-key-rotation.yml'
+  
 jobs:
   terraform:
-    name: 'Terraform'
+    name: terraform
     runs-on: ubuntu-latest
-    environment: prod
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    # Use the Bash shell regardless whether the GitHub Actions runner is
+    # ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
+        working-directory: ${{ matrix.environment }}
 
+    strategy:
+      max-parallel: 1
+      matrix:
+        environment: [prod]
+        include:
+          - environment: prod
+            secret_name: TF_API_TOKEN
+         
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v2
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      # Install the latest version of Terraform CLI and configure the Terraform CLI
+      # configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
 
-    - name: Terraform Init
-        id: init
-        run: |
-           rm -rf .terraform
-           terraform init -backend-config=${{ matrix.environment }}/backend.tfvars -upgrade=true -no-color -input=false
-    - name: Terraform Plan
-        id: plan
-        run: |
-          terraform plan -input=false -var-file=${{ matrix.environment }}/terraform.tfvars -no-color
-    - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        id: apply
-        run: terraform apply -auto-approve -input=false -var-file=${{ matrix.environment }}/terraform.tfvars
-    - name: Terraform destroy
-        if: github.ref == 'refs/heads/destroy'
-        id: destroy
-        run: terraform destroy -auto-approve -input=false -var-file=${{ matrix.environment }}/terraform.tfvars
-  comment:
-    runs-on: ubuntu-latest
-    needs: terraform
-    if: github.event_name == 'pull_request'
-    steps:
-      - uses: actions/github-script@v5
+      - name: Setup GCP Credentials
+        uses: google-github-actions/setup-gcloud@v0
         with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '👋 Thanks for reporting!'
-            })
+          service_account_key: ${{ secrets[matrix.secret_name] }}
+          export_default_credentials: true     
+
+      # Fail pipeline if code is not formatted proper
+      - name: terraform fmt
+        id: fmt
+        run: terraform fmt -check
+
+      # Initialize a new or existing Terraform working directory by creating initial files
+      # loading any remote state, downloading modules, etc.
+      - name: terraform init
+        run: terraform init
+
+      # Checks that all Terraform configuration files adhere to a canonical format
+      - name: terraform validate
+        run: terraform validate
+
+      # Generates an execution plan for Terraform
+      - name: terraform plan
+        run: terraform plan -out=${{ github.sha }}.plan
+
+      # On push to master, build or change infrastructure according to Terraform configuration files
+      - name: terraform apply
+        if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+        run: terraform apply -auto-approve "${{ github.sha }}.plan"
+ 
