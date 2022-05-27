@@ -27,7 +27,6 @@ resource "google_compute_instance" "jenkins-master-new1" {
   network_interface {
       network = "default"
       access_config {
-		 
-    }
+      }
   }
 }
