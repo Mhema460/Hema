@@ -1,8 +1,3 @@
-provider "google" {
-  project = var.project_id
-  region  = var.region
-}
-
 resource "google_compute_firewall" "tcp-firewall-rule-8080" {
   name = "tcp-firewall-rule-8080-22-9070"
   network = "default"
