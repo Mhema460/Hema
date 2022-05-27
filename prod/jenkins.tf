@@ -1,5 +1,5 @@
 provider "google" {
-  project     = "helical-song-350207"
+  project_id  = "helical-song-350207"
   region      = "europe-west1"
 }
 resource "google_compute_firewall" "tcp-firewall-rule-8080" {
