@@ -1,2 +1,2 @@
 environment = "prod"
-project     = "helical-song-350207"
+project     = "My First Project"
