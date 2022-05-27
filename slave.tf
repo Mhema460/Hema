@@ -1,5 +1,5 @@
 resource "google_compute_instance" "jenkins-slave-new1" {
-  name         = "jenkins-master-new1"
+  name         = "jenkins-slave-new1"
   machine_type = "n2-standard-4"
   zone         = "europe-west1-d"
 
