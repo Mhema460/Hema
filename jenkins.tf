@@ -1,7 +1,3 @@
-provider "google" {
-  project     = "helical-song-350207"
-  region      = "europe-west1"
-}
 resource "google_compute_firewall" "tcp-firewall-rule-8080" {
   name = "tcp-firewall-rule-8080-22-9070"
   network = "default"
