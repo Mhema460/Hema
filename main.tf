@@ -10,6 +10,6 @@ terraform {
   }
 }
 
-resource "google_storage_bucket" "hema-tf-state-prod" {
+resource "google_storage_bucket" "gcs_bucket" {
   name = "test-bucket-460"
 }
