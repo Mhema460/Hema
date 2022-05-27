@@ -1,6 +1,6 @@
 provider "google" {
-  project = "helical-song-350207"
-  region  = "europe-west1"
+  project = var.project_id
+  region  = var.region
 }
 
 terraform {
