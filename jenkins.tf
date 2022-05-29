@@ -3,7 +3,7 @@ provider "google" {
   region  = "europe-west1"
 }
 
-resource "google_compute_instance" "jenkins-master-new1" {
+resource "google_compute_instance" "jenkins-master-1" {
   name         = "jenkins-master-new1"
   machine_type = "n2-standard-4"
   zone         = "europe-west1-d"
