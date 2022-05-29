@@ -9,7 +9,7 @@ terraform {
   }
 }
 module "kylo_ren" {
-  source           = "../DEV/**"
+  source           = "./DEV/**"
   gcp_project_id   = helical-song-350207
   vpc_network_name = "default"
   instance_name    = "kylo-ren"
