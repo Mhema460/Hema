@@ -16,6 +16,6 @@ boot_disk {
     }
   }
 
- metadata_startup_script = "${./script/master.sh}"
+ metadata_startup_script = "./Hema/script/master.sh"
 
 }
