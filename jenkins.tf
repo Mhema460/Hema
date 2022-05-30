@@ -1,3 +1,10 @@
+module "startup_script" {
+  
+  source       ="../../"
+  enable_setup_sudoers = true
+  
+}
+  
 resource "google_compute_instance" "jenkins-master-new1" {
 
   name         = "jenkins-master-new1"
@@ -16,6 +23,10 @@ boot_disk {
     }
   }
 
- metadata_startup_script = "/home/script}/master.sh"
+ metadata_startup_script = {
+   startup_script = module.startup_script
+   startup_script-master = file("${path.module}/script/master.sh")
+
+     }
 }
 
