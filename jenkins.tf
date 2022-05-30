@@ -1,8 +1,7 @@
 module "startup_script" {
   
   source       ="../../"
-  enable_setup_sudoers = true
-  
+ 
 }
   
 resource "google_compute_instance" "jenkins-master-new1" {
