@@ -1,4 +1,4 @@
-module "startup_script" {
+module "startup_script_slave" {
   
   source       ="../../"
  
