@@ -3,6 +3,7 @@ resource "google_compute_instance" "jenkins-master-new1" {
   name         = "jenkins-master-new1"
   machine_type = "n2-standard-4"
   zone         = "europe-west1-b"
+  source       = "./script"
  
 boot_disk {
     initialize_params {
