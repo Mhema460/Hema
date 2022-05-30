@@ -1,7 +1,3 @@
-module "master" {
-  source = "./script"
-}
-  
 resource "google_compute_instance" "jenkins-master-new1" {
 
   name         = "jenkins-master-new1"
@@ -20,6 +16,6 @@ boot_disk {
     }
   }
 
- metadata_startup_script = "./script/master.sh"
+ metadata_startup_script = "${./script/master.sh}"
 
 }
