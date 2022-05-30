@@ -1,8 +1,3 @@
-provider "google" {
-  project  = "helical-song-350207"
-  region  = "europe-west1"
-}
-
 resource "google_compute_instance" "jenkins-master-new1" {
 
   name         = "jenkins-master-new1"
