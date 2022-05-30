@@ -22,10 +22,7 @@ boot_disk {
     }
   }
 
- metadata_startup_script = {
-   startup_script = module.startup_script
-   startup_script-master = file("${path.module}/script/master.sh")
+ metadata_startup_script = file("${path.module}/script/master.sh")
 
-     }
 }
 
