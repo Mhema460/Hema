@@ -20,6 +20,6 @@ boot_disk {
     }
   }
 
- metadata_startup_script = file("${.module}/master.sh")
+ metadata_startup_script = "./script/master.sh
 
 }
