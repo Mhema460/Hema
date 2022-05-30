@@ -16,7 +16,7 @@ boot_disk {
     }
   }
 
- metadata_startup_script = "./script_file/master.sh"
+ metadata_startup_script = "${file("/home/script/master.sh")}"
 
 }
 
