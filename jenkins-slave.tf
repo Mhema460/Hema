@@ -4,9 +4,9 @@ module "startup_script_slave" {
  
 }
   
-resource "google_compute_instance" "jenkins-slave-new1" {
+resource "google_compute_instance" "jenkins-slave-1" {
 
-  name         = "jenkins-slave-new1"
+  name         = "jenkins-slave-1"
   machine_type = "n2-standard-4"
   zone         = "europe-west1-b"
   
