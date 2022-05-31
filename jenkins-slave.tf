@@ -7,7 +7,7 @@ module "startup_script_slave" {
 resource "google_compute_instance" "jenkins-slave-1" {
 
   name         = "jenkins-slave-1"
-  machine_type = "n2-standard-4"
+  machine_type = "e2-micro"
   zone         = "europe-west1-b"
   
 boot_disk {
