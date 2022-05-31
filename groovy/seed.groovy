@@ -1,3 +1,5 @@
+categorizedJobsView('Hema - DEV') {  
+
 jobs {
         regex('.*-flow|.*-tmpl|mip-.*(?<!(mapper|ear|sqls|logging|msba|properties|test))|Hema-mapper-utils|BAL')
     }
@@ -17,3 +19,4 @@ jobs {
         lastDuration()
         buildButton()
     }
+}
