@@ -7,7 +7,7 @@ module "startup_script" {
 resource "google_compute_instance" "jenkins-master-1" {
 
   name         = "jenkins-master-1"
-  machine_type = "n2-standard-4"
+  machine_type = "e2-micro"
   zone         = "europe-west1-b"
   
 boot_disk {
