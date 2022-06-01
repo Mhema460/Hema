@@ -1,4 +1,5 @@
 sudo apt update -y
+gcloud compute ssh --zone "europe-west1-b" "instance1"  --project "helical-song-350207"
 sudo apt install -y mc nano wget git curl
 
 #install java JDK 8 and 11
