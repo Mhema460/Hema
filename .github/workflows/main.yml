@@ -1,11 +1,13 @@
 name: 'Terraform CI'
 
 on:
+  # Manual trigger
+  workflow_dispatch:
   push:
-    branches:
-    - main
+    paths:
+      - '*/**'
   pull_request:
-
+    branches: [ main ]
 jobs:
   terraform:
     name: 'Terraform'
