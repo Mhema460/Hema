@@ -1,4 +1,4 @@
-resource "google_compute_instance" "instance1" {
+resource "google_compute_instance" "instance" {
 
   name         = "instance1"
   machine_type = "e2-medium"
