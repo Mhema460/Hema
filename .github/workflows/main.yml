@@ -1,13 +1,11 @@
 name: 'Terraform CI'
 
 on:
-  # Manual trigger
-  workflow_dispatch:
   push:
-    paths:
-      - '*/**'
+    branches:
+    - main
   pull_request:
-    branches: [ main ]
+
 jobs:
   terraform:
     name: 'Terraform'
@@ -47,5 +45,3 @@ jobs:
       run: terraform apply -auto-approve
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-    
-
