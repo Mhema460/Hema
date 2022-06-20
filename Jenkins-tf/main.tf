@@ -1,4 +1,4 @@
- resource "google_compute_instance" "master" {
+ resource "google_compute_instance" "hema" {
 
   name         = "instance1"
   machine_type = "e2-medium"
