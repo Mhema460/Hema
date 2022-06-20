@@ -4,9 +4,9 @@ module "startup_script_instance1" {
  
 }
   
-resource "google_compute_instance" "instance1" {
+resource "google_compute_instance" "hema" {
 
-  name         = "instance1"
+  name         = "hema"
   machine_type = "e2-medium"
   zone         = "europe-west1-b"
   
