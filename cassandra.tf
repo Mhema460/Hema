@@ -1,6 +1,6 @@
-resource "google_compute_instance" "instance1" {
+resource "google_compute_instance" "cassandra" {
 
-  name         = "instance1"
+  name         = "cassandra"
   machine_type = "e2-medium"
   zone         = "europe-west1-b"
   
