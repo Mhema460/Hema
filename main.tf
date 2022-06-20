@@ -1,6 +1,6 @@
-resource "google_compute_instance" "instance" {
+resource "google_compute_instance" "hema" {
 
-  name         = "instance"
+  name         = "hema"
   machine_type = "e2-medium"
   zone         = "europe-west1-b"
   
