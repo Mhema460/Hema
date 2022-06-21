@@ -24,9 +24,9 @@ terraform {
   }
 }
 
-resource "google_compute_instance" "Mahesh" {
+resource "google_compute_instance" "mahesh" {
 
-  name         = "Mahesh"
+  name         = "mahesh"
   machine_type = "e2-medium"
   zone         = "europe-west1-b"
   
