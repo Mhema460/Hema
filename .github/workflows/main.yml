@@ -53,7 +53,7 @@ jobs:
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
-        working-directory: ./jenkins-tf
+        working-directory: ./Jenkins-tf
         shell: bash
 
     steps:
