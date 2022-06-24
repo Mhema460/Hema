@@ -13,7 +13,7 @@ locals {
 
     master_details = {
 
-     "jenkins-master-new1"  = {
+     "master1"  = {
         machine_type                         = "e2-medium" , 
         zone                                 = "europe-west1-b" ,
         image                                = "ubuntu-1804-lts" ,
@@ -28,7 +28,7 @@ locals {
      
      slave_details = {
 
-     "jenkins-slave-1"  = {
+     "slave1"  = {
         machine_type                         = "e2-medium" , 
         zone                                 = "europe-west1-b" ,
         image                                = "ubuntu-1804-lts" ,
