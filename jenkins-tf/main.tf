@@ -2,7 +2,7 @@
 
   name         = "test"
   machine_type = "e2-medium"
-  zone         = "europe-west1-b"
+  zone         = "europe-north1-b"
   
 boot_disk {
     initialize_params {
