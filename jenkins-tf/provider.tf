@@ -15,7 +15,7 @@ terraform {
 
 provider "google" {
   project  = "helical-song-350207"
-  region  = "europe-west1"
+  region  = "europe-north1"
 }
 terraform {
   backend "gcs" {
